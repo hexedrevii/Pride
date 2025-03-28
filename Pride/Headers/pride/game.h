@@ -1,10 +1,14 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <string>
+#include <memory>
 
 #include "colour.h"
+#include "vec2.h"
+#include "content_loader.h"
 
 namespace Pride
 {
@@ -18,6 +22,11 @@ namespace Pride
 
 		SDL_WindowFlags m_flags = 0;
 	public:
+		/// <summary>
+		/// Content manager for the window.
+		/// </summary>
+		ContentLoader content = ContentLoader();
+
 		/// <summary>
 		/// Set the config flags for the window. Call this BEFORE calling create_window.
 		/// </summary>
@@ -67,6 +76,16 @@ namespace Pride
 		{
 			SDL_RenderPresent(this->m_renderer);
 		}
+
+		/// <summary>
+		/// Draw a texture to the screen.
+		/// </summary>
+		void draw_texture(SDL_Texture* texture, Math::Vec2 position, Colour tint);
+
+		/// <summary>
+		/// Draw a texture to the screen.
+		/// </summary>
+		void draw_texture(SDL_Texture* texture, Math::Vec2 position, float scale, Colour tint);
 
 		/// <summary>
 		/// Get raw render pointer, shouldn't call this yourself.
