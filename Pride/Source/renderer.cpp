@@ -26,7 +26,6 @@ bool Pride::Renderer::create(int width, int height)
 	this->m_width = width;
 
 	SDL_Log("INFO: RENDERER: Created render target.");
-
 	return true;
 }
 

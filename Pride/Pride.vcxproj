@@ -152,6 +152,7 @@
     <ClInclude Include="Headers\pride\colour.h" />
     <ClInclude Include="Headers\pride\game.h" />
     <ClInclude Include="Headers\pride\renderer.h" />
+    <ClInclude Include="Headers\pride\vec2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
