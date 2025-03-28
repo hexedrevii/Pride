@@ -55,8 +55,18 @@ void Pride::Game::poll_events()
 
 void Pride::Game::close_window()
 {
-	if (this->m_window) SDL_DestroyWindow(this->m_window);
-	if (this->m_renderer) SDL_DestroyRenderer(this->m_renderer);
+	if (this->m_window)
+	{
+		SDL_DestroyWindow(this->m_window);
+		SDL_Log("INFO: SDL: Destroyed window pointer.");
+	}
 
+	if (this->m_renderer)
+	{
+		SDL_DestroyRenderer(this->m_renderer);
+		SDL_Log("INFO: SDL: Destroyed render pointer.");
+	}
+
+	SDL_Log("INFO: SDL: Quitting SDL.");
 	SDL_Quit();
 }
