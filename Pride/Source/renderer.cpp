@@ -22,6 +22,8 @@ bool Pride::Renderer::create(int width, int height)
 		return false;
 	}
 
+	SDL_SetTextureScaleMode(this->m_renderer, SDL_SCALEMODE_NEAREST);
+
 	this->m_height = height;
 	this->m_width = width;
 

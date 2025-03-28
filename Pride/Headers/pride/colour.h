@@ -13,6 +13,11 @@ namespace Pride
 
 		constexpr Colour(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha = 255) 
 			: r(red), g(green), b(blue), a(alpha) {}
+
+		bool operator==(const Colour& rhs)
+		{
+			return this->r == rhs.r && this->g == rhs.g && this->b == rhs.b && this->a == rhs.a;
+		}
 	};
 
 	namespace Colours
