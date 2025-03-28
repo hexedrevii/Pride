@@ -1,13 +1,17 @@
 #include "pride/renderer.h"
 
-#include <cmath>
-
 
 bool Pride::Renderer::create(int width, int height)
 {
 	if (!this->m_render)
 	{
 		SDL_Log("ERROR: RENDERER: Renderer doesn't exist.");
+		return false;
+	}
+
+	if (!this->m_window)
+	{
+		SDL_Log("ERROR: SDL: Window doesn't exist.");
 		return false;
 	}
 
@@ -20,6 +24,8 @@ bool Pride::Renderer::create(int width, int height)
 
 	this->m_height = height;
 	this->m_width = width;
+
+	SDL_Log("INFO: RENDERER: Created render target.");
 
 	return true;
 }
@@ -41,7 +47,7 @@ void Pride::Renderer::detach_and_draw()
 	int width, height;
 	SDL_GetWindowSize(this->m_window, &width, &height);
 
-	float scale = fminf(
+	float scale = std::min(
 		static_cast<float>(width) / this->m_width,
 		static_cast<float>(height) / this->m_height
 	);
