@@ -44,6 +44,11 @@ bool Pride::Game::create_window(std::string title, int width, int height)
 	return true;
 }
 
+bool Pride::Game::create_window(std::string title, Pride::Math::Vec2 size)
+{
+	return this->create_window(title, size.x, size.y);
+}
+
 void Pride::Game::poll_events()
 {
 	SDL_Event e;

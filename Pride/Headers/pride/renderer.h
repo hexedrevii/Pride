@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 
 #include "game.h"
+#include "vec2.h"
 
 namespace Pride
 {
@@ -28,6 +29,11 @@ namespace Pride
 		/// Create a new renderer
 		/// </summary>
 		bool create(int width, int height);
+
+		/// <summary>
+		/// Create a new renderer
+		/// </summary>
+		bool create(Math::Vec2 size);
 
 		/// <summary>
 		/// Attaches the renderer for drawing.

@@ -31,6 +31,11 @@ bool Pride::Renderer::create(int width, int height)
 	return true;
 }
 
+bool Pride::Renderer::create(Pride::Math::Vec2 size)
+{
+	return this->create(size.x, size.y);
+}
+
 void Pride::Renderer::attach()
 {
 	SDL_SetRenderTarget(this->m_render, this->m_renderer);

@@ -43,6 +43,13 @@ namespace Pride
 		bool create_window(std::string name, int width, int height);
 
 		/// <summary>
+		/// Create the SDL_Window pointer.
+		/// </summary>
+		/// <param name="name">The window title</param>
+		/// <returns>Returns true if the window was created successfully, false otherwise</returns>
+		bool create_window(std::string name, Math::Vec2 size);
+
+		/// <summary>
 		/// Handle window events.
 		/// </summary>
 		void poll_events();
