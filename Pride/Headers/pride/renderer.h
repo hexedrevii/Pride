@@ -16,7 +16,7 @@ namespace Pride
 		SDL_Renderer* m_render;
 		SDL_Window* m_window;
 
-		int m_width, m_height;
+		int m_width = 0, m_height = 0;
 	public:
 		Renderer(Pride::Game* game)
 		{
@@ -43,5 +43,13 @@ namespace Pride
 		/// Detaches the renderer and draws it.
 		/// </summary>
 		void detach_and_draw();
+
+		/// <summary>
+		/// Destroys the renderer
+		/// </summary>
+		void destroy()
+		{
+			SDL_DestroyTexture(this->m_renderer);
+		}
 	};
 }
