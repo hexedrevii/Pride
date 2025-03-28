@@ -54,7 +54,7 @@ namespace Pride
 		/// <summary>
 		/// Clear the background of the active renderer.
 		/// </summary>
-		void clear(Pride::Colour colour)
+		void clear(const Pride::Colour colour)
 		{
 			SDL_SetRenderDrawColor(this->m_renderer, colour.r, colour.g, colour.b, colour.a);
 			SDL_RenderClear(this->m_renderer);
