@@ -5,6 +5,8 @@
 
 #include <string>
 #include <memory>
+#include <vector>
+#include <functional>
 
 #include "colour.h"
 #include "vec2.h"
@@ -12,9 +14,17 @@
 
 namespace Pride
 {
+	struct Event
+	{
+		SDL_EventType type;
+		std::function<void(SDL_Event*)> callback;
+	};
+
 	class Game
 	{
 	private:
+		std::vector<Event> m_events;
+
 		SDL_Window* m_window = nullptr;
 		SDL_Renderer* m_renderer = nullptr;
 
@@ -48,6 +58,16 @@ namespace Pride
 		/// <param name="name">The window title</param>
 		/// <returns>Returns true if the window was created successfully, false otherwise</returns>
 		bool create_window(std::string name, Math::Vec2 size);
+
+		/// <summary>
+		/// Register a new event for the poll_events function.
+		/// </summary>
+		void register_event(SDL_EventType type, std::function<void(SDL_Event*)> callback);
+
+		/// <summary>
+		/// Register a new event for the poll_events function.
+		/// </summary>
+		void register_event(Event event);
 
 		/// <summary>
 		/// Handle window events.
