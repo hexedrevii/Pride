@@ -17,7 +17,7 @@ namespace Pride::Math
         /// <summary>
         /// Convert the Vector2 to SDL_Point
         /// </summary>
-        SDL_Point to_point() const
+        SDL_Point as_point() const
         {
             return SDL_Point(this->x, this->y);
         }

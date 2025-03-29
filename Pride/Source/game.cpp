@@ -54,16 +54,29 @@ void Pride::Game::poll_events()
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
-		switch (e.type)
+		if (e.type == SDL_EVENT_QUIT)
 		{
-		case SDL_EVENT_QUIT:
 			this->m_end = true;
-			break;
+		}
 
-		default:
-			break;
+		for (const Event& bound_event : this->m_events)
+		{
+			if (e.type == bound_event.type)
+			{
+				bound_event.callback(&e);
+			}
 		}
 	}
+}
+
+void Pride::Game::register_event(Pride::Event event)
+{
+	this->m_events.push_back(event);
+}
+
+void Pride::Game::register_event(SDL_EventType type, std::function<void(SDL_Event*)> callback)
+{
+	this->m_events.push_back(Pride::Event(type, callback));
 }
 
 void Pride::Game::close_window()
