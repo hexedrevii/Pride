@@ -58,13 +58,13 @@ void Pride::Renderer::detach_and_draw()
 		static_cast<float>(height) / this->m_height
 	);
 
-	SDL_FRect dst = SDL_FRect(
+	SDL_FRect dst = SDL_FRect{
 		(width - (this->m_width * scale)) * 0.5f,
 		(height - (this->m_height * scale)) * 0.5f,
 		this->m_width * scale, this->m_height * scale
-	);
+	};
 
-	SDL_FRect src = SDL_FRect(0, 0, this->m_renderer->w, this->m_renderer->h);
+	SDL_FRect src = SDL_FRect {0, 0, static_cast<float>(this->m_renderer->w), static_cast<float>(this->m_renderer->h)};
 
 	SDL_RenderTexture(this->m_render, this->m_renderer, nullptr, &dst);
 }
