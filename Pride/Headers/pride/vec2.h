@@ -4,6 +4,7 @@
 
 namespace Pride::Math
 {
+    /// @brief Represents a Vector2 class that holds two float values.
     class Vec2
     {
     public:
@@ -14,10 +15,16 @@ namespace Pride::Math
 
         Vec2() : x(0), y(0) {};
 
-        /// Convert the Vector2 to SDL_Point
+        /// @brief Convert the vector to SDL_Point
         SDL_Point as_point() const
         {
             return SDL_Point {static_cast<int>(this->x), static_cast<int>(this->y)};
+        }
+
+        /// @brief Convert the vector to SDL_FPoint
+        SDL_FPoint as_fpoint() const
+        {
+            return SDL_FPoint {this->x, this->y};
         }
 
 

@@ -4,7 +4,7 @@
 
 namespace Pride
 {
-	// Represents a RGBA colour struct.
+	/// @brief Represents a RGBA colour struct.
 	struct Colour
 	{
 		Uint8 r, g, b, a;

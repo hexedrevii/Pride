@@ -35,69 +35,112 @@ namespace Pride
 
 		SDL_WindowFlags m_flags = 0;
 	public:
-		// Content manager for the window.
+		/// @brief Content manager for the window.
 		ContentLoader content = ContentLoader();
-
-		// Set the config flags for the window. Call this BEFORE calling create_window.
+	
+		/**
+		 * @brief Set the config flags for the window. 
+		 * @note Call this BEFORE calling create_window().
+		 * @param flags SDL_WindowFlags to configure window behavior.
+		 */
 		void set_config_flags(SDL_WindowFlags flags)
 		{
 			this->m_flags = flags;
 		}
-
-		// Create the SDL_Window pointer.
-		// <param name="name">The window title</param>
-		// <returns>Returns true if the window was created successfully, false otherwise</returns>
+	
+		/**
+		 * @brief Creates the SDL_Window pointer.
+		 * @param name The window title.
+		 * @param width The window width in pixels.
+		 * @param height The window height in pixels.
+		 * @return true if the window was created successfully, false otherwise.
+		 */
 		bool create_window(std::string name, int width, int height);
-
-		// Create the SDL_Window pointer.
-		// <param name="name">The window title</param>
-		// <returns>Returns true if the window was created successfully, false otherwise</returns>
+	
+		/**
+		 * @brief Creates the SDL_Window pointer (Vec2 overload).
+		 * @param name The window title.
+		 * @param size Window dimensions (width and height) as a Vec2.
+		 * @return true if the window was created successfully, false otherwise.
+		 */
 		bool create_window(std::string name, Math::Vec2 size);
-
-		// Register a new event for the poll_events function.
+	
+		/**
+		 * @brief Register a new event callback for poll_events().
+		 * @param type The SDL_EventType to listen for (e.g., SDL_KEYDOWN).
+		 * @param callback Function to execute when the event occurs.
+		 */
 		void register_event(SDL_EventType type, std::function<void(SDL_Event*)> callback);
-
-		// Register a new event for the poll_events function.
+	
+		/**
+		 * @brief Register a pre-configured Event object for poll_events().
+		 * @param event The Event struct containing type and callback.
+		 */
 		void register_event(Event event);
-
-		// Handle window events.
+	
+		/// @brief Process all pending window events (call once per frame).
 		void poll_events();
-
-		// Destroy window data.
+	
+		/// @brief Safely destroy the window and cleanup resources.
 		void close_window();
-
-		// Returns wether window is running or not.
+	
+		/**
+		 * @brief Check if the window should close (e.g., after SDL_QUIT).
+		 * @return true if the window is flagged to close, false otherwise.
+		 */
 		bool window_should_close() const 
 		{
 			return this->m_end;
 		}
-
-		// Clear the background of the active renderer.
+	
+		/**
+		 * @brief Clear the renderer with a solid color.
+		 * @param colour The background color (Pride::Colour RGBA format).
+		 */
 		void clear(const Pride::Colour colour)
 		{
 			SDL_SetRenderDrawColor(this->m_renderer, colour.r, colour.g, colour.b, colour.a);
 			SDL_RenderClear(this->m_renderer);
 		}
 		
-		// Present the current framebuffer and move to the next one.
+		/// @brief Present the rendered frame and prepare for the next one.
 		void advance_frame()
 		{
 			SDL_RenderPresent(this->m_renderer);
 		}
-
-		// Draw a texture to the screen.
+	
+		/**
+		 * @brief Draw a texture at a specific position.
+		 * @param texture The SDL_Texture to render.
+		 * @param position Screen coordinates (Vec2).
+		 * @param tint Color modulation (Pride::Colour).
+		 */
 		void draw_texture(SDL_Texture* texture, Math::Vec2 position, Colour tint);
-
-		// Draw a texture to the screen.
+	
+		/**
+		 * @brief Draw a scaled texture at a position.
+		 * @param texture The SDL_Texture to render.
+		 * @param position Screen coordinates (Vec2).
+		 * @param scale Multiplier for texture size.
+		 * @param tint Color modulation (Pride::Colour).
+		 */
 		void draw_texture(SDL_Texture* texture, Math::Vec2 position, float scale, Colour tint);
-
-		// Get raw render pointer, shouldn't call this yourself.
+	
+		/**
+		 * @brief Get the internal SDL_Renderer (advanced use only).
+		 * @warning Avoid direct manipulation unless necessary.
+		 * @return Raw SDL_Renderer pointer.
+		 */
 		SDL_Renderer* get_raw_renderer() const
 		{
 			return this->m_renderer;
 		}
-
-		// Get raw window pointer, shouldn't call this yourself.
+	
+		/**
+		 * @brief Get the internal SDL_Window (advanced use only).
+		 * @warning Avoid direct manipulation unless necessary.
+		 * @return Raw SDL_Window pointer.
+		 */
 		SDL_Window* get_raw_window() const
 		{
 			return this->m_window;
