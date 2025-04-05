@@ -5,6 +5,10 @@
         "**/.vscode": true
     },
 
+    "search.exclude": {
+        "**/External": true,
+    },
+
     "files.associations": {
         "*.p8": "lua",
         "array": "cpp",

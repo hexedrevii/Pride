@@ -94,8 +94,8 @@ namespace Pride
 		}
 	
 		/**
-		 * @brief Clear the renderer with a solid color.
-		 * @param colour The background color (Pride::Colour RGBA format).
+		 * @brief Clear the renderer with a solid colour.
+		 * @param colour The background colour (Pride::Colour RGBA format).
 		 */
 		void clear(const Pride::Colour colour)
 		{
@@ -113,7 +113,7 @@ namespace Pride
 		 * @brief Draw a texture at a specific position.
 		 * @param texture The SDL_Texture to render.
 		 * @param position Screen coordinates (Vec2).
-		 * @param tint Color modulation (Pride::Colour).
+		 * @param tint Colour modulation (Pride::Colour).
 		 */
 		void draw_texture(SDL_Texture* texture, Math::Vec2 position, Colour tint);
 	
@@ -122,7 +122,7 @@ namespace Pride
 		 * @param texture The SDL_Texture to render.
 		 * @param position Screen coordinates (Vec2).
 		 * @param scale Multiplier for texture size.
-		 * @param tint Color modulation (Pride::Colour).
+		 * @param tint Colour modulation (Pride::Colour).
 		 */
 		void draw_texture(SDL_Texture* texture, Math::Vec2 position, float scale, Colour tint);
 	
