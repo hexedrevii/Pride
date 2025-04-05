@@ -20,8 +20,7 @@ namespace Pride
 
         /// @brief Enroll an entity to the planet. 
         /// @param entity The entity to enroll
-        template<typename TEntity>
-        void enroll(std::shared_ptr<TEntity> entity);
+        void enroll(std::shared_ptr<Entity> entity);
     };
 
     template<typename TEntity, typename... TArgs>
@@ -36,10 +35,8 @@ namespace Pride
         return entity;
     }
 
-    template<typename TEntity>
-    void Planet::enroll(std::shared_ptr<TEntity> entity)
+    inline void Planet::enroll(std::shared_ptr<Entity> entity)
     {
-        static_assert(std::is_base_of<Entity, TEntity>::value, "TEntity must derive from Entity");
         this->m_entities.push_back(entity);
     }
 }
