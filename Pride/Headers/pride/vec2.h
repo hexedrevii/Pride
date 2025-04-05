@@ -10,10 +10,10 @@ namespace Pride::Math
     public:
         float x, y;
 
-        Vec2(float x, float y) : x(x), y(y) {};
-        Vec2(float value) : x(value), y(value) {};
+        constexpr Vec2(float x, float y) : x(x), y(y) {};
+        constexpr Vec2(float value) : x(value), y(value) {};
 
-        Vec2() : x(0), y(0) {};
+        constexpr Vec2() : x(0), y(0) {};
 
         /// @brief Convert the vector to SDL_Point
         SDL_Point as_point() const
