@@ -25,34 +25,22 @@ namespace Pride
 			this->m_window = game->get_raw_window();
 		}
 
-		/// <summary>
-		/// Create a new renderer
-		/// </summary>
+		// Create a new renderer
 		bool create(int width, int height);
 
-		/// <summary>
-		/// Create a new renderer
-		/// </summary>
+		// Create a new renderer
 		bool create(Math::Vec2 size);
 
-		/// <summary>
-		/// Attaches the renderer for drawing.
-		/// </summary>
+		// Attaches the renderer for drawing.
 		void attach();
 
-		/// <summary>
-		/// Detaches the renderer without drawing.
-		/// </summary>
+		// Detaches the renderer without drawing.
 		void detach();
 
-		/// <summary>
-		/// Detaches the renderer and draws it.
-		/// </summary>
+		// Detaches the renderer and draws it.
 		void detach_and_draw();
 
-		/// <summary>
-		/// Destroys the renderer
-		/// </summary>
+		// Destroys the renderer
 		void destroy()
 		{
 			SDL_DestroyTexture(this->m_renderer);

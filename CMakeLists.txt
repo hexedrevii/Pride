@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(Pride VERSION 1.0)
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 
 option(COMPILE_EXAMPLE "Build example executable" OFF)
 option(BUILD_WITH_SDL "Build with bundled SDL" ON)

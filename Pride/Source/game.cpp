@@ -106,6 +106,6 @@ void Pride::Game::draw_texture(SDL_Texture* texture, Pride::Math::Vec2 position,
 {
 	SDL_SetTextureColorMod(texture, tint.r, tint.g, tint.b);
 
-	SDL_FRect rect = SDL_FRect(position.x, position.y, texture->w * scale, texture->h * scale);
+	SDL_FRect rect = SDL_FRect { position.x, position.y, texture->w * scale, texture->h * scale };
 	SDL_RenderTexture(this->m_renderer, texture, nullptr, &rect);
 }

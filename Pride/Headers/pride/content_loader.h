@@ -14,9 +14,7 @@ namespace Pride
 		SDL_Renderer* m_renderer = nullptr;
 
 	public:
-		/// <summary>
-		/// Load the render device for content loading.
-		/// </summary>
+		// Load the render device for content loading.
 		bool load_renderer(SDL_Renderer* renderer)
 		{
 			if (!renderer) return false;
@@ -25,9 +23,7 @@ namespace Pride
 			return true;
 		}
 
-		/// <summary>
-		/// Loads a texture relative to the EXE position.
-		/// </summary>
+		// Loads a texture relative to the EXE position.
 		SDL_Texture* load_texture_relative(const std::filesystem::path& path, SDL_ScaleMode mode = SDL_SCALEMODE_LINEAR);
 	};
 }

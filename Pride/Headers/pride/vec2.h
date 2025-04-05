@@ -14,12 +14,10 @@ namespace Pride::Math
 
         Vec2() : x(0), y(0) {};
 
-        /// <summary>
         /// Convert the Vector2 to SDL_Point
-        /// </summary>
         SDL_Point as_point() const
         {
-            return SDL_Point(this->x, this->y);
+            return SDL_Point {static_cast<int>(this->x), static_cast<int>(this->y)};
         }
 
 
