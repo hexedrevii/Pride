@@ -1,6 +1,6 @@
-[submodule "Pride/External/SDL"]
-	path = Pride/External/SDL
+[submodule "External/SDL"]
+	path = External/SDL
 	url = https://github.com/libsdl-org/SDL
-[submodule "Pride/External/SDL_image"]
-	path = Pride/External/SDL_image
+[submodule "External/SDL_image"]
+	path = External/SDL_image
 	url = https://github.com/libsdl-org/SDL_image
