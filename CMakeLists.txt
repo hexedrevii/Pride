@@ -3,12 +3,12 @@ project(Pride VERSION 1.0)
 set(CMAKE_CXX_STANDARD 23)
 
 option(COMPILE_EXAMPLE "Build example executable" OFF)
-option(PRIDE_BUILD_WITH_SDL "Build with bundled SDL" ON)
+option(BUILD_WITH_SDL "Build with bundled SDL" ON)
 
 # Only build SDL submodules if requested
-if(PRIDE_BUILD_WITH_SDL)
-    add_subdirectory(Pride/External/SDL)
-    add_subdirectory(Pride/External/SDL_image)
+if(BUILD_WITH_SDL)
+    add_subdirectory(External/SDL)
+    add_subdirectory(External/SDL_image)
 
     set(PRIDE_SDL_TARGETS SDL3 SDL3_image)
 endif()
@@ -26,10 +26,10 @@ target_include_directories(Pride PUBLIC
 )
 
 # Private includes (only for this library)
-if(PRIDE_BUILD_WITH_SDL)
+if(BUILD_WITH_SDL)
     target_include_directories(Pride PRIVATE
-        Pride/External/SDL/include
-        Pride/External/SDL_image/include
+        External/SDL/include
+        External/SDL_image/include
     )
 endif()
 
@@ -46,8 +46,8 @@ if(COMPILE_EXAMPLE)
     target_include_directories(WindowExample PRIVATE
         Pride/Headers
 
-        Pride/External/SDL/include
-        Pride/External/SDL_image/include
+        External/SDL/include
+        External/SDL_image/include
     )
 
     target_link_libraries(WindowExample PRIVATE
