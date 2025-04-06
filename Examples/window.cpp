@@ -26,17 +26,17 @@ int main()
 		// ----------------
 
 		// Draw inside window world
-		game.clear(Pride::Colours::Black);
+		game.drawables.clear(Pride::Colours::Black);
 
 		// Draw inside the renderer
 		renderer.attach();
-		game.clear(Pride::Colours::SkyBlue);
+		game.drawables.clear(Pride::Colours::SkyBlue);
 
 		// Draw the renderer in the window world
 		renderer.detach_and_draw();
 
 		// Advance to the next frame
-		game.advance_frame();
+		game.drawables.advance_frame();
 	}
 
 	renderer.destroy();
