@@ -3,14 +3,45 @@ project(Pride VERSION 1.0)
 set(CMAKE_CXX_STANDARD 20)
 
 option(COMPILE_EXAMPLE "Build example executable" OFF)
-option(BUILD_WITH_SDL "Build with bundled SDL" ON)
 
-# Only build SDL submodules if requested
-if(BUILD_WITH_SDL)
-    add_subdirectory(External/SDL)
-    add_subdirectory(External/SDL_image)
+# Enable FetchContent
+include(FetchContent)
 
-    set(PRIDE_SDL_TARGETS SDL3 SDL3_image)
+find_package(SDL3 QUIET)
+find_package(SDL3_image QUIET)
+
+# If not found, fetch and build them
+if(NOT SDL3_FOUND OR NOT SDL3_image_FOUND)
+    message(STATUS "SDL3 or SDL3_image not found - using embedded versions.")
+    
+    include(FetchContent)
+    
+    # SDL3
+    if(NOT SDL3_FOUND)
+        message(STATUS "Using embedded SDL3.")
+
+        FetchContent_Declare(
+            sdl3
+            GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+            GIT_TAG main
+        )
+    endif()
+    
+    # SDL3_image (depends on SDL3)
+    if(NOT SDL3_image_FOUND)
+        message(STATUS "Using embedded SDL3_image.")
+
+        FetchContent_Declare(
+            sdl3_image
+            GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
+            GIT_TAG main
+
+            OVERRIDE_FIND_PACKAGE  # Ensure we use our SDL3
+        )
+    endif()
+    
+    # Fetch both with dependency awareness
+    FetchContent_MakeAvailable(sdl3 sdl3_image)
 endif()
 
 # Handle sources
@@ -25,16 +56,8 @@ target_include_directories(Pride PUBLIC
     Pride/Headers
 )
 
-# Private includes (only for this library)
-if(BUILD_WITH_SDL)
-    target_include_directories(Pride PRIVATE
-        External/SDL/include
-        External/SDL_image/include
-    )
-endif()
-
 target_link_libraries(Pride PRIVATE
-    ${PRIDE_SDL_TARGETS}
+    SDL3::SDL3 SDL3_image::SDL3_image
 )
 
 # Example window with renderer.
@@ -52,7 +75,7 @@ if(COMPILE_EXAMPLE)
 
     target_link_libraries(WindowExample PRIVATE
         Pride
-        SDL3
-        SDL3_image
+        SDL3::SDL3
+        SDL3_image::SDL3_image
     )
 endif()
