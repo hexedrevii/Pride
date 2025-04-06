@@ -39,20 +39,20 @@ int main()
 		// ----------------
 
 		// Draw inside window world
-		game.clear(Pride::Colours::Black);
+		game.drawables.clear(Pride::Colours::Black);
 
 		// Draw inside the renderer
 		renderer.attach();
-		game.clear(Pride::Colours::SkyBlue);
+		game.drawables.clear(Pride::Colours::SkyBlue);
 
 		// Draw normal texture
-		game.draw_texture(
+		game.drawables.draw_texture(
 			texture, Pride::Math::Vec2(),
 			Pride::Colours::White
 		);
 
 		// Draw texture scaled and red
-		game.draw_texture(
+		game.drawables.draw_texture(
 			texture, Pride::Math::Vec2(10, 10),
 			3.0f, Pride::Colours::Red
 		);
@@ -62,7 +62,7 @@ int main()
 
 
 		// Advance to the next frame
-		game.advance_frame();
+		game.drawables.advance_frame();
 	}
 
 	renderer.destroy();
