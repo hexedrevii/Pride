@@ -5,9 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 option(COMPILE_EXAMPLE "Build example executable" OFF)
 option(USE_EMBEDDED "Build Pride using embedded SDL if not found." ON)
 
-# Enable FetchContent
-include(FetchContent)
-
 find_package(SDL3 QUIET)
 find_package(SDL3_image QUIET)
 
@@ -27,23 +24,27 @@ if (USE_EMBEDDED)
                 GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
                 GIT_TAG main
             )
+
+            FetchContent_MakeAvailable(sdl3)
         endif()
         
         # SDL3_image (depends on SDL3)
         if(NOT SDL3_image_FOUND)
             message(STATUS "Using embedded SDL3_image.")
-
+            
             FetchContent_Declare(
                 sdl3_image
                 GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
                 GIT_TAG main
-
-                OVERRIDE_FIND_PACKAGE  # Ensure we use our SDL3
             )
+
+            FetchContent_MakeAvailable(sdl3_image)
         endif()
-        
-        # Fetch both with dependency awareness
-        FetchContent_MakeAvailable(sdl3 sdl3_image)
+    endif()
+else()
+    if(NOT SDL3_FOUND OR NOT SDL3_image_FOUND)
+        message(STATUS "SDL3 or SDL3_image not found and USE_EMBEDDED disabled.")
+        message(STATUS "Please download SDL3 and SDL3_image on your system, or enable USE_EMBEDDED.")
     endif()
 endif()
 
@@ -71,14 +72,10 @@ if(COMPILE_EXAMPLE)
 
     target_include_directories(WindowExample PRIVATE
         Pride/Headers
-
-        External/SDL/include
-        External/SDL_image/include
     )
 
     target_link_libraries(WindowExample PRIVATE
         Pride
-        SDL3::SDL3
-        SDL3_image::SDL3_image
+        SDL3::SDL3 SDL3_image::SDL3_image
     )
 endif()
