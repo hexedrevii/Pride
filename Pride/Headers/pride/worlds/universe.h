@@ -6,63 +6,64 @@
 
 namespace Pride
 {
-    /// @brief Represents a world handler.
-    class Universe
+  /// @brief Represents a world handler.
+  class Universe
+  {
+  public:
+    /// @brief Set the active world.
+    void set(std::unique_ptr<World> next);
+
+    template <typename TWorld, typename... TArgs> void set(TArgs &&...args);
+
+    /// @brief Process the world.
+    void process();
+
+    /// @brief Render the world.
+    void render();
+
+  private:
+    std::unique_ptr<World> m_active;
+  };
+
+  inline void Universe::set(std::unique_ptr<World> next)
+  {
+    if (this->m_active != nullptr)
     {
-    public:
-        /// @brief Set the active world.
-        void set(std::unique_ptr<World> next);
-
-        template<typename TWorld, typename... TArgs>
-        void set(TArgs&&... args);
-
-        /// @brief Process the world.
-        void process();
-
-        /// @brief Render the world.
-        void render();
-    private:
-        std::unique_ptr<World> m_active;
-    };
-
-    inline void Universe::set(std::unique_ptr<World> next)
-    {
-        if (this->m_active != nullptr)
-        {
-            this->m_active->leave();
-        }
-
-        this->m_active = std::move(next);
-        this->m_active->awake();
+      this->m_active->leave();
     }
 
-    template<typename TWorld, typename... TArgs>
-    inline void Universe::set(TArgs&&... args)
+    this->m_active = std::move(next);
+    this->m_active->awake();
+  }
+
+  template <typename TWorld, typename... TArgs>
+  inline void Universe::set(TArgs &&...args)
+  {
+    static_assert(std::is_base_of<World, TWorld>::value,
+                  "TWorld must derive from World");
+
+    if (this->m_active != nullptr)
     {
-        static_assert(std::is_base_of<World, TWorld>::value, "TWorld must derive from World");
-
-        if (this->m_active != nullptr)
-        {
-            this->m_active->leave();
-        }
-
-        this->m_active = std::make_unique<TWorld>(std::forward<TArgs>(args)...);
-        this->m_active->awake();
+      this->m_active->leave();
     }
 
-    inline void Universe::process()
-    {
-        if (this->m_active != nullptr)
-        {
-            this->m_active->process();
-        }
-    }
+    this->m_active = std::make_unique<TWorld>(std::forward<TArgs>(args)...);
+    this->m_active->awake();
+  }
 
-    inline void Universe::render()
+  inline void Universe::process()
+  {
+    if (this->m_active != nullptr)
     {
-        if (this->m_active != nullptr)
-        {
-            this->m_active->render();
-        }
+      this->m_active->process();
     }
-}
+  }
+
+  inline void Universe::render()
+  {
+    if (this->m_active != nullptr)
+    {
+      this->m_active->render();
+    }
+  }
+} // namespace Pride
