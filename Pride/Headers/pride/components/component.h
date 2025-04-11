@@ -4,23 +4,23 @@
 
 namespace Pride
 {
-    class Entity; // Forward decl because C++ is ass.
-    
-    class Component
-    {
-    public:
-        /// @brief Entity parent of the component
-        Entity* parent = nullptr;
+  class Entity; // Forward decl because C++ is ass.
 
-        int id = -1;
+  class Component
+  {
+  public:
+    /// @brief Entity parent of the component
+    Entity *parent = nullptr;
 
-        /// @brief Should be called every frame, before render.
-        virtual void render() {};
+    int id = -1;
 
-        /// @brief Should be called every frame, after process.
-        virtual void process() {};
+    /// @brief Should be called every frame, before render.
+    virtual void render() {};
 
-        /// @brief Should be called once, when the component is destroyed.
-        virtual void leave() {};
-    };
-}
+    /// @brief Should be called every frame, after process.
+    virtual void process() {};
+
+    /// @brief Should be called once, when the component is destroyed.
+    virtual void leave() {};
+  };
+} // namespace Pride
