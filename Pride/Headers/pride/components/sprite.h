@@ -9,9 +9,6 @@ namespace Pride
 {
     class Sprite : public Component
     {
-    private:
-        Drawable& m_draw;
-        SDL_Texture* m_texture;
     public:
         Sprite(Drawable& draw, SDL_Texture* texture) 
             : m_draw(draw), m_texture(texture) {}
@@ -24,5 +21,8 @@ namespace Pride
                 Colours::White
             );
         }
+    private:
+        Drawable& m_draw;
+        SDL_Texture* m_texture;
     };
 }

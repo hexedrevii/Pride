@@ -9,8 +9,6 @@ namespace Pride
     /// @brief Represents a world handler.
     class Universe
     {
-    private:
-        std::unique_ptr<World> m_active;
     public:
         /// @brief Set the active world.
         void set(std::unique_ptr<World> next);
@@ -23,6 +21,8 @@ namespace Pride
 
         /// @brief Render the world.
         void render();
+    private:
+        std::unique_ptr<World> m_active;
     };
 
     inline void Universe::set(std::unique_ptr<World> next)

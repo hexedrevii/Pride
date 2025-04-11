@@ -13,13 +13,6 @@ namespace Pride
      */
     class Renderer
     {
-    private:
-        SDL_Texture* m_renderer = nullptr;  
-        SDL_Renderer* m_render;             
-        SDL_Window* m_window;               
-        int m_width = 0;              
-        int m_height = 0;
-
     public:
         /**
          * @brief Constructs a Renderer tied to a Game instance.
@@ -72,5 +65,11 @@ namespace Pride
         {
             SDL_DestroyTexture(this->m_renderer);
         }
+    private:
+        SDL_Texture* m_renderer = nullptr;
+        SDL_Renderer* m_render;
+        SDL_Window* m_window;
+        int m_width = 0;
+        int m_height = 0;
     };
 }

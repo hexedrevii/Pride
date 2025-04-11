@@ -9,8 +9,6 @@ namespace Pride
 {
     class Drawable
     {
-    private:
-        SDL_Renderer* m_renderer = nullptr;             
     public:
         /// @brief Create the Drawable.
         bool create(SDL_Renderer* render)
@@ -57,6 +55,7 @@ namespace Pride
 		 * @param tint Colour modulation (Pride::Colour).
 		 */
 		void draw_texture(SDL_Texture* texture, Math::Vec2 position, float scale, Colour tint);
-	
+    private:
+        SDL_Renderer* m_renderer = nullptr;
     };
 }
