@@ -1,22 +1,33 @@
 #include "pride/game.h"
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_timer.h>
+#include <SDL3/SDL_video.h>
 
-bool Pride::Game::create_window(std::string title, int width, int height)
+// Hidden stuff
+// That's what the anon namespace does... probably
+namespace {
+	Uint64 now, last;
+	float delta = 0;
+}
+
+void Pride::Game::create_and_run()
 {
 	if (!SDL_Init(SDL_INIT_VIDEO))
 	{
 		SDL_Log("ERROR: SDL: Cannot initialise SDL.");
-		return false;
+		exit(1);
 	}
 
 	SDL_Log("INFO: SDL: Initialised SDL.");
 
-	this->m_window = SDL_CreateWindow(title.c_str(), width, height, this->m_flags);
+	this->m_window = SDL_CreateWindow(this->m_title.c_str(), this->m_size.x, this->m_size.y, this->m_flags);
 	if (!this->m_window)
 	{
 		SDL_Log("ERROR: SDL: Cannot initialise SDL Window.");
 		SDL_Quit();
 
-		return false;
+		exit(1);
 	}
 
 	SDL_Log("INFO: SDL: Initialised SDL Window.");
@@ -28,14 +39,15 @@ bool Pride::Game::create_window(std::string title, int width, int height)
 
 		SDL_DestroyWindow(this->m_window);
 		SDL_Quit();
-		return false;
+
+		exit(1);
 	}
 
 	SDL_Log("INFO: RENDERER: Initialised basic renderer.");
 
 	if (!this->drawables.create(this->m_renderer))
 	{
-		return false;
+		exit(1);
 	}
 
 	SDL_Log("INFO: DRAWABLE: Created drawable.");
@@ -43,60 +55,57 @@ bool Pride::Game::create_window(std::string title, int width, int height)
 	if (!this->content.load_renderer(this->m_renderer))
 	{
 		SDL_Log("ERROR: CONTENT_LOADER: Failed to load renderer, it does not exist.");
-		return false;
+		exit(1);
 	}
 
 	SDL_Log("INFO: CONTENT_LOADER: Created content loader.");
 
-	return true;
-}
+	last = SDL_GetPerformanceCounter();
 
-bool Pride::Game::create_window(std::string title, Pride::Math::Vec2 size)
-{
-	return this->create_window(title, size.x, size.y);
-}
-
-void Pride::Game::poll_events()
-{
-	SDL_Event e;
-	while (SDL_PollEvent(&e))
+	this->initialise();
+	while(this->m_run)
 	{
-		if (e.type == SDL_EVENT_QUIT)
-		{
-			this->m_end = true;
-		}
+		// Update, calculate dt
+		now = SDL_GetPerformanceCounter();
+		delta = (now - last) / (float)SDL_GetPerformanceFrequency();
+		last = now;
 
-		for (const Event& bound_event : this->m_events)
+		// Handle events
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
 		{
-			if (e.type == bound_event.type)
+			switch (event.type)
 			{
-				bound_event.callback(&e);
+				case SDL_EVENT_QUIT:
+					this->m_run = false;
+					break;
 			}
+
+			this->on_event(event);
 		}
+
+		this->process(delta);
+
+		// Render frame
+		this->render();
+
+		// Present the current framebuffer.
+		SDL_RenderPresent(this->m_renderer);
 	}
-}
 
-void Pride::Game::register_event(Pride::Event event)
-{
-	this->m_events.push_back(event);
-}
-
-void Pride::Game::register_event(SDL_EventType type, std::function<void(SDL_Event*)> callback)
-{
-	this->m_events.push_back(Pride::Event(type, callback));
-}
-
-void Pride::Game::close_window()
-{
-	if (this->m_window)
-	{
-		SDL_DestroyWindow(this->m_window);
-		SDL_Log("INFO: SDL: Destroyed window pointer.");
-	}
+	// The game is now closing.
+	SDL_Log("INFO: SDL: Game is closing.");
+	this->leave();
 
 	if (this->m_renderer)
 	{
 		SDL_DestroyRenderer(this->m_renderer);
+		SDL_Log("INFO: SDL: Destroyed window pointer.");
+	}
+
+	if (this->m_window)
+	{
+		SDL_DestroyWindow(this->m_window);
 		SDL_Log("INFO: SDL: Destroyed render pointer.");
 	}
 
