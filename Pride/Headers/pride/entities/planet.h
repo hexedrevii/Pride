@@ -21,6 +21,15 @@ namespace Pride
         /// @brief Enroll an entity to the planet. 
         /// @param entity The entity to enroll
         void enroll(std::shared_ptr<Entity> entity);
+
+        /// @brief Should be called once a frame, before render.
+        void process();
+        
+        /// @brief Should be called once a frame, after process.
+        void render();
+
+        /// @brief Should be called once, right before the planet is destroyed.
+        void leave();
     };
 
     template<typename TEntity, typename... TArgs>
@@ -30,6 +39,8 @@ namespace Pride
         static_assert(std::is_base_of<Entity, TEntity>::value, "TEntity must derive from Entity");
 
         std::shared_ptr<TEntity> entity = std::make_shared<TEntity>(std::forward<TArgs>(args)...);
+        entity->awake();
+        
         this->m_entities.emplace_back(entity);
 
         return entity;
@@ -38,5 +49,29 @@ namespace Pride
     inline void Planet::enroll(std::shared_ptr<Entity> entity)
     {
         this->m_entities.push_back(entity);
+    }
+
+    inline void Planet::process()
+    {
+        for (std::shared_ptr<Entity>& entity : this->m_entities)
+        {
+            entity->update();
+        }
+    }
+
+    inline void Planet::render()
+    {
+        for (std::shared_ptr<Entity>& entity : this->m_entities)
+        {
+            entity->draw();
+        }
+    }
+
+    inline void Planet::leave()
+    {
+        for (std::shared_ptr<Entity>& entity : this->m_entities)
+        {
+            entity->destroy();
+        }
     }
 }
