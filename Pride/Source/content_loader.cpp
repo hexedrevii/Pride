@@ -1,8 +1,33 @@
 #include "pride/content_loader.h"
-#include <string>
+
+void Pride::ContentLoader::register_asset_relative(const std::string_view name, const std::filesystem::path& path, SDL_ScaleMode mode)
+{
+	if (!this->m_renderer)
+	{
+		SDL_Log("ERROR: TEXTURE: The renderer is not initialised.");
+		return;
+	}
+
+	SDL_Texture* tex = this->load_texture_relative(path, mode);
+	if (!tex) return;
+
+	if(this->assets.find(name) != this->assets.end())
+	{
+		SDL_Log("WARNING: TEXTURE: Asset already exists, overwriting.");
+		SDL_DestroyTexture(this->assets[name]);
+	}
+
+	this->assets[name] = tex;
+}
 
 SDL_Texture* Pride::ContentLoader::load_texture_relative(const std::filesystem::path& path, SDL_ScaleMode mode)
 {
+	if (!this->m_renderer)
+	{
+		SDL_Log("ERROR: TEXTURE: The renderer is not initialised.");
+		return nullptr;
+	}
+	
 	const char* base = SDL_GetBasePath();
 	if (!base)
 	{

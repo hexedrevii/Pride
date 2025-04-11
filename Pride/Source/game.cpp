@@ -97,6 +97,13 @@ void Pride::Game::create_and_run()
 	SDL_Log("INFO: SDL: Game is closing.");
 	this->leave();
 
+	// Destroy registered textures
+	for (std::pair<const std::basic_string_view<char>, SDL_Texture*>& asset : this->content.assets)
+	{
+		SDL_Log("INFO: TEXTURE: Destroying asset.");
+		SDL_DestroyTexture(asset.second);
+	}
+
 	if (this->m_renderer)
 	{
 		SDL_DestroyRenderer(this->m_renderer);
