@@ -1,105 +1,126 @@
 #include "pride/game.h"
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_timer.h>
+#include <SDL3/SDL_video.h>
 
-bool Pride::Game::create_window(std::string title, int width, int height)
+// Hidden stuff
+// That's what the anon namespace does... probably
+namespace
 {
-	if (!SDL_Init(SDL_INIT_VIDEO))
-	{
-		SDL_Log("ERROR: SDL: Cannot initialise SDL.");
-		return false;
-	}
+  Uint64 now, last;
+  float delta = 0;
+} // namespace
 
-	SDL_Log("INFO: SDL: Initialised SDL.");
-
-	this->m_window = SDL_CreateWindow(title.c_str(), width, height, this->m_flags);
-	if (!this->m_window)
-	{
-		SDL_Log("ERROR: SDL: Cannot initialise SDL Window.");
-		SDL_Quit();
-
-		return false;
-	}
-
-	SDL_Log("INFO: SDL: Initialised SDL Window.");
-
-	this->m_renderer = SDL_CreateRenderer(this->m_window, nullptr);
-	if (!this->m_renderer)
-	{
-		SDL_Log("ERROR: RENDERER: Cannot initialise basic renderer.");
-
-		SDL_DestroyWindow(this->m_window);
-		SDL_Quit();
-		return false;
-	}
-
-	SDL_Log("INFO: RENDERER: Initialised basic renderer.");
-
-	if (!this->drawables.create(this->m_renderer))
-	{
-		return false;
-	}
-
-	SDL_Log("INFO: DRAWABLE: Created drawable.");
-
-	if (!this->content.load_renderer(this->m_renderer))
-	{
-		SDL_Log("ERROR: CONTENT_LOADER: Failed to load renderer, it does not exist.");
-		return false;
-	}
-
-	SDL_Log("INFO: CONTENT_LOADER: Created content loader.");
-
-	return true;
-}
-
-bool Pride::Game::create_window(std::string title, Pride::Math::Vec2 size)
+void Pride::Game::create_and_run()
 {
-	return this->create_window(title, size.x, size.y);
-}
+  if (!SDL_Init(SDL_INIT_VIDEO))
+  {
+    SDL_Log("ERROR: SDL: Cannot initialise SDL.");
+    exit(1);
+  }
 
-void Pride::Game::poll_events()
-{
-	SDL_Event e;
-	while (SDL_PollEvent(&e))
-	{
-		if (e.type == SDL_EVENT_QUIT)
-		{
-			this->m_end = true;
-		}
+  SDL_Log("INFO: SDL: Initialised SDL.");
 
-		for (const Event& bound_event : this->m_events)
-		{
-			if (e.type == bound_event.type)
-			{
-				bound_event.callback(&e);
-			}
-		}
-	}
-}
+  this->m_window = SDL_CreateWindow(this->m_title.c_str(), this->m_size.x,
+                                    this->m_size.y, this->m_flags);
+  if (!this->m_window)
+  {
+    SDL_Log("ERROR: SDL: Cannot initialise SDL Window.");
+    SDL_Quit();
 
-void Pride::Game::register_event(Pride::Event event)
-{
-	this->m_events.push_back(event);
-}
+    exit(1);
+  }
 
-void Pride::Game::register_event(SDL_EventType type, std::function<void(SDL_Event*)> callback)
-{
-	this->m_events.push_back(Pride::Event(type, callback));
-}
+  SDL_Log("INFO: SDL: Initialised SDL Window.");
 
-void Pride::Game::close_window()
-{
-	if (this->m_window)
-	{
-		SDL_DestroyWindow(this->m_window);
-		SDL_Log("INFO: SDL: Destroyed window pointer.");
-	}
+  this->m_renderer = SDL_CreateRenderer(this->m_window, nullptr);
+  if (!this->m_renderer)
+  {
+    SDL_Log("ERROR: RENDERER: Cannot initialise basic renderer.");
 
-	if (this->m_renderer)
-	{
-		SDL_DestroyRenderer(this->m_renderer);
-		SDL_Log("INFO: SDL: Destroyed render pointer.");
-	}
+    SDL_DestroyWindow(this->m_window);
+    SDL_Quit();
 
-	SDL_Log("INFO: SDL: Quitting SDL.");
-	SDL_Quit();
+    exit(1);
+  }
+
+  SDL_Log("INFO: RENDERER: Initialised basic renderer.");
+
+  if (!this->drawables.create(this->m_renderer))
+  {
+    exit(1);
+  }
+
+  SDL_Log("INFO: DRAWABLE: Created drawable.");
+
+  if (!this->content.load_renderer(this->m_renderer))
+  {
+    SDL_Log(
+        "ERROR: CONTENT_LOADER: Failed to load renderer, it does not exist.");
+    exit(1);
+  }
+
+  SDL_Log("INFO: CONTENT_LOADER: Created content loader.");
+
+  last = SDL_GetPerformanceCounter();
+
+  this->initialise();
+  while (this->m_run)
+  {
+    // Update, calculate dt
+    now = SDL_GetPerformanceCounter();
+    delta = (now - last) / (float)SDL_GetPerformanceFrequency();
+    last = now;
+
+    // Handle events
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+      switch (event.type)
+      {
+      case SDL_EVENT_QUIT:
+        this->m_run = false;
+        break;
+      }
+
+      this->on_event(event);
+    }
+
+    this->process(delta);
+
+    // Render frame
+    this->render();
+
+    // Present the current framebuffer.
+    SDL_RenderPresent(this->m_renderer);
+  }
+
+  // The game is now closing.
+  SDL_Log("INFO: SDL: Game is closing.");
+  this->leave();
+
+  // Destroy registered textures
+  for (std::pair<const std::basic_string_view<char>, SDL_Texture *> &asset :
+       this->content.assets)
+  {
+    SDL_Log("INFO: TEXTURE: Destroying asset %s.",
+            std::string(asset.first).c_str());
+    SDL_DestroyTexture(asset.second);
+  }
+
+  if (this->m_renderer)
+  {
+    SDL_DestroyRenderer(this->m_renderer);
+    SDL_Log("INFO: SDL: Destroyed window pointer.");
+  }
+
+  if (this->m_window)
+  {
+    SDL_DestroyWindow(this->m_window);
+    SDL_Log("INFO: SDL: Destroyed render pointer.");
+  }
+
+  SDL_Log("INFO: SDL: Quitting SDL.");
+  SDL_Quit();
 }
