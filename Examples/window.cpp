@@ -12,7 +12,7 @@ public:
 		this->m_flags = SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE;
 	};
 
-	// This is a required function
+	// This is a required function.
 	void initialise() override
 	{
 		// Initialise renderer.

@@ -10,9 +10,6 @@ namespace Pride
 {
     class Entity
     {
-    private:
-        std::vector<std::shared_ptr<Component>> m_components;
-
     public:
         Pride::Math::Vec2 position = Pride::Math::Vec2();
         Pride::Math::Vec2 velocity = Pride::Math::Vec2();
@@ -72,6 +69,8 @@ namespace Pride
 
             this->leave();
         }
+    private:
+        std::vector<std::shared_ptr<Component>> m_components;
     };
 
     template<typename TComponent, typename... TArgs>

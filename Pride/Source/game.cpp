@@ -100,7 +100,7 @@ void Pride::Game::create_and_run()
 	// Destroy registered textures
 	for (std::pair<const std::basic_string_view<char>, SDL_Texture*>& asset : this->content.assets)
 	{
-		SDL_Log("INFO: TEXTURE: Destroying asset.");
+		SDL_Log("INFO: TEXTURE: Destroying asset %s.", std::string(asset.first).c_str());
 		SDL_DestroyTexture(asset.second);
 	}
 

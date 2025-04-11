@@ -9,8 +9,6 @@ namespace Pride
 {
     class Planet
     {
-    private:
-        std::vector<std::shared_ptr<Entity>> m_entities;
     public:
         /// @brief Enroll a new entity into the planet.
         /// @param ...args The constructor args for the entity.
@@ -30,6 +28,8 @@ namespace Pride
 
         /// @brief Should be called once, right before the planet is destroyed.
         void leave();
+    private:
+        std::vector<std::shared_ptr<Entity>> m_entities;
     };
 
     template<typename TEntity, typename... TArgs>
