@@ -84,7 +84,7 @@ void Pride::Game::create_and_run()
         break;
       }
 
-      this->on_event(event);
+      this->event(event);
     }
 
     this->process(delta);

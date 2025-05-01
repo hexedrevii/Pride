@@ -34,7 +34,7 @@ namespace Pride
     void create_and_run();
 
     /// @brief Called when an SDL_Event happens.
-    virtual void on_event(const SDL_Event &event) {};
+    virtual void event(const SDL_Event &event) {};
 
     /// @brief Called once after the constructor.
     virtual void initialise() = 0;

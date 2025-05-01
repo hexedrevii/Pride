@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "world.h"
+#include <SDL3/SDL.h>
 
 namespace Pride
 {
@@ -15,8 +16,11 @@ namespace Pride
 
     template <typename TWorld, typename... TArgs> void set(TArgs &&...args);
 
+    /// @brief Handle world events.
+    void event(const SDL_Event &event);
+
     /// @brief Process the world.
-    void process();
+    void process(float delta);
 
     /// @brief Render the world.
     void render();
@@ -51,11 +55,19 @@ namespace Pride
     this->m_active->awake();
   }
 
-  inline void Universe::process()
+  inline void Universe::event(const SDL_Event& event)
   {
     if (this->m_active != nullptr)
     {
-      this->m_active->process();
+      this->m_active->event(event);
+    }
+  }
+
+  inline void Universe::process(float delta)
+  {
+    if (this->m_active != nullptr)
+    {
+      this->m_active->process(delta);
     }
   }
 
