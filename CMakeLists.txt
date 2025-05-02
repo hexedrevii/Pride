@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(Pride VERSION 1.0)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 
 option(COMPILE_EXAMPLE "Build example executable" OFF)
@@ -12,9 +13,9 @@ find_package(SDL3_image QUIET)
 if (USE_EMBEDDED)
     if(NOT SDL3_FOUND OR NOT SDL3_image_FOUND)
         message(STATUS "SDL3 or SDL3_image not found - using embedded versions.")
-        
+
         include(FetchContent)
-        
+
         # SDL3
         if(NOT SDL3_FOUND)
             message(STATUS "Using embedded SDL3.")
@@ -27,11 +28,11 @@ if (USE_EMBEDDED)
 
             FetchContent_MakeAvailable(sdl3)
         endif()
-        
+
         # SDL3_image (depends on SDL3)
         if(NOT SDL3_image_FOUND)
             message(STATUS "Using embedded SDL3_image.")
-            
+
             FetchContent_Declare(
                 sdl3_image
                 GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
@@ -53,10 +54,9 @@ file(GLOB PRIDE_SOURCES CONFIGURE_DEPENDS "Pride/Source/**.cpp")
 file(GLOB PRIDE_HEADERS CONFIGURE_DEPENDS "Pride/Headers/**.h")
 add_library(Pride STATIC
     ${PRIDE_SOURCES}
-    ${PRIDE_HEADERS}
 )
 
-target_include_directories(Pride PUBLIC 
+target_include_directories(Pride PUBLIC
     Pride/Headers
 )
 

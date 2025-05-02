@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../entities/entity.h"
-
 namespace Pride
 {
   class Entity; // Forward decl because C++ is ass.

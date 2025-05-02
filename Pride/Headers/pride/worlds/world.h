@@ -8,6 +8,8 @@ namespace Pride
   class World
   {
   public:
+    virtual ~World() = default;
+
     /// @brief Ran when an event happens.
     virtual void event(const SDL_Event &event) {};
 
