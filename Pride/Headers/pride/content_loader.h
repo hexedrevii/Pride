@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pride/texture.h"
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
@@ -17,7 +18,7 @@ namespace Pride
   public:
     /// @brief Asset manager for those who do not want to handle them
     /// themselves.
-    std::unordered_map<std::string_view, SDL_Texture *> assets;
+    std::unordered_map<std::string_view, Pride::Texture> assets;
 
     /**
      * @brief Register a new asset to the asset map.
@@ -27,18 +28,6 @@ namespace Pride
     void register_asset_relative(const std::string_view name,
                                  const std::filesystem::path &path,
                                  SDL_ScaleMode mode = SDL_SCALEMODE_LINEAR);
-
-    /**
-     * @brief Loads a texture from a filesystem path (relative to executable).
-     * @param path Relative path to the texture file (supports PNG, JPG, etc.).
-     * @param mode Scaling filter mode (default: SDL_SCALEMODE_LINEAR).
-     * @return Pointer to SDL_Texture on success, nullptr on failure.
-     * @throws std::runtime_error if renderer isn't initialized or file is
-     * missing.
-     */
-    SDL_Texture *
-    load_texture_relative(const std::filesystem::path &path,
-                          SDL_ScaleMode mode = SDL_SCALEMODE_LINEAR);
 
     /**
      * @brief Initializes the content loader with a renderer.

@@ -21,7 +21,7 @@ namespace Pride
     void enroll(std::shared_ptr<Entity> entity);
 
     /// @brief Should be called once a frame, before render.
-    void process();
+    void process(float delta);
 
     /// @brief Should be called once a frame, after process.
     void render();
@@ -54,11 +54,11 @@ namespace Pride
     this->m_entities.push_back(entity);
   }
 
-  inline void Planet::process()
+  inline void Planet::process(float delta)
   {
     for (std::shared_ptr<Entity> &entity : this->m_entities)
     {
-      entity->update();
+      entity->update(delta);
     }
   }
 

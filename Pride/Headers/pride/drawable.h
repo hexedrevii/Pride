@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 
 #include "colour.h"
+#include "pride/texture.h"
 #include "vec2.h"
 
 namespace Pride
@@ -42,21 +43,20 @@ namespace Pride
 
     /**
      * @brief Draw a texture at a specific position.
-     * @param texture The SDL_Texture to render.
+     * @param texture The Pride::Texture to render.
      * @param position Screen coordinates (Vec2).
      * @param tint Colour modulation (Pride::Colour).
      */
-    void draw_texture(SDL_Texture *texture, Math::Vec2 position, Colour tint);
+    void draw_texture(const Pride::Texture& texture, Math::Vec2 position, Colour tint);
 
     /**
      * @brief Draw a scaled texture at a position.
-     * @param texture The SDL_Texture to render.
+     * @param texture The Pride::Texture to render.
      * @param position Screen coordinates (Vec2).
      * @param scale Multiplier for texture size.
      * @param tint Colour modulation (Pride::Colour).
      */
-    void draw_texture(SDL_Texture *texture, Math::Vec2 position, float scale,
-                      Colour tint);
+    void draw_texture(const Pride::Texture& texture, Math::Vec2 position, float scale, Colour tint);
 
   private:
     SDL_Renderer *m_renderer = nullptr;

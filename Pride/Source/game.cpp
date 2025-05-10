@@ -8,8 +8,8 @@
 // That's what the anon namespace does... probably
 namespace
 {
-  Uint64 now, last;
-  float delta = 0;
+  static Uint64 now, last;
+  static float delta = 0;
 } // namespace
 
 void Pride::Game::create_and_run()
@@ -100,25 +100,16 @@ void Pride::Game::create_and_run()
   SDL_Log("INFO: SDL: Game is closing.");
   this->leave();
 
-  // Destroy registered textures
-  for (std::pair<const std::basic_string_view<char>, SDL_Texture *> &asset :
-       this->content.assets)
-  {
-    SDL_Log("INFO: TEXTURE: Destroying asset %s.",
-            std::string(asset.first).c_str());
-    SDL_DestroyTexture(asset.second);
-  }
-
   if (this->m_renderer)
   {
     SDL_DestroyRenderer(this->m_renderer);
-    SDL_Log("INFO: SDL: Destroyed window pointer.");
+    SDL_Log("INFO: SDL: Destroyed render pointer.");
   }
 
   if (this->m_window)
   {
     SDL_DestroyWindow(this->m_window);
-    SDL_Log("INFO: SDL: Destroyed render pointer.");
+    SDL_Log("INFO: SDL: Destroyed window pointer.");
   }
 
   SDL_Log("INFO: SDL: Quitting SDL.");

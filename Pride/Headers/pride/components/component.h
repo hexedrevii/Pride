@@ -16,7 +16,7 @@ namespace Pride
     virtual void render() {};
 
     /// @brief Should be called every frame, after process.
-    virtual void process() {};
+    virtual void process(float delta) {};
 
     /// @brief Should be called once, when the component is destroyed.
     virtual void leave() {};

@@ -28,7 +28,7 @@ namespace Pride
     virtual void awake() {};
 
     /// @brief Should be called every frame, before render.
-    virtual void process() {};
+    virtual void process(float delta) {};
 
     /// @brief Should be called every frame, after process.
     virtual void render() {};
@@ -37,14 +37,14 @@ namespace Pride
     virtual void leave() {};
 
     /// @brief This processes the components then the entity.
-    void update()
+    void update(float delta)
     {
       for (std::shared_ptr<Component> &component : this->m_components)
       {
-        component->process();
+        component->process(delta);
       }
 
-      this->process();
+      this->process(delta);
     }
 
     /// @brief THis renders the components then the entity.
@@ -76,11 +76,9 @@ namespace Pride
   template <typename TComponent, typename... TArgs>
   inline void Entity::enroll_component(TArgs &&...args)
   {
-    static_assert(std::is_base_of<Component, TComponent>::value,
-                  "TComponent must derive from Component");
+    static_assert(std::is_base_of<Component, TComponent>::value, "TComponent must derive from Component");
 
-    std::shared_ptr<TComponent> component =
-        std::make_shared<TComponent>(std::forward<TArgs>(args)...);
+    std::shared_ptr<TComponent> component = std::make_shared<TComponent>(std::forward<TArgs>(args)...);
     component->id = this->m_components.size();
     component->parent = this;
 

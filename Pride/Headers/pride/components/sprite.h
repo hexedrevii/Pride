@@ -2,7 +2,7 @@
 
 #include "../drawable.h"
 #include "component.h"
-
+#include "../entities/entity.h"
 #include <SDL3/SDL.h>
 
 namespace Pride
@@ -17,8 +17,7 @@ namespace Pride
 
     void render() override
     {
-      this->m_draw.draw_texture(this->m_texture, this->parent->position,
-                                Colours::White);
+      this->m_draw.draw_texture(this->m_texture, this->parent->position, Colours::White);
     }
 
   private:
