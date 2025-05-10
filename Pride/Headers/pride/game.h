@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_video.h>
 #include <SDL3_image/SDL_image.h>
 
 #include <string>
@@ -32,6 +33,11 @@ namespace Pride
 
     /// @brief Creates the SDL_Window pointer.
     void create_and_run();
+
+    void set_title(std::string title)
+    {
+      SDL_SetWindowTitle(this->m_window, title.c_str());
+    }
 
     /// @brief Called when an SDL_Event happens.
     virtual void event(const SDL_Event &event) {};
