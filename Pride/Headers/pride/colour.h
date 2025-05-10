@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_pixels.h>
 
 namespace Pride
 {
@@ -10,14 +11,17 @@ namespace Pride
     Uint8 r, g, b, a;
 
     constexpr Colour(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha = 255)
-        : r(red), g(green), b(blue), a(alpha)
-    {
-    }
+      : r(red), g(green), b(blue), a(alpha) {}
 
     bool operator==(const Colour &rhs)
     {
       return this->r == rhs.r && this->g == rhs.g && this->b == rhs.b &&
              this->a == rhs.a;
+    }
+
+    operator SDL_Color()
+    {
+      return SDL_Color { this->r, this->g, this->b, this->a };
     }
   };
 
