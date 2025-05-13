@@ -24,6 +24,9 @@ namespace Pride
     /// @param component The component to add.
     void enroll_component(std::shared_ptr<Component> component);
 
+    /// @brief Should be called once when an event happens.
+    virtual void event(const SDL_Event& event) {};
+
     /// @brief Should be called once when the entity is first created.
     virtual void awake() {};
 
@@ -35,6 +38,16 @@ namespace Pride
 
     /// @brief Should be called once, when the entity is destroyed.
     virtual void leave() {};
+
+    void handle_events(const SDL_Event& event)
+    {
+      for (std::shared_ptr<Component> &component : this->m_components)
+      {
+        component->event(event);
+      }
+
+      this->event(event);
+    }
 
     /// @brief This processes the components then the entity.
     void update(float delta)

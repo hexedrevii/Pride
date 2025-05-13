@@ -15,10 +15,10 @@ Pride::Texture::Texture(const std::filesystem::path& path, SDL_Renderer* render)
   SDL_Texture *tex = IMG_LoadTexture(render, legacy.c_str());
   if (!tex) throw std::runtime_error(std::format("Texture could not be loaded: {}", SDL_GetError()));
 
-  this->m_texture = std::unique_ptr<SDL_Texture, Pride::SDLTextureDestroyer>(tex);
+  this->width = tex->w;
+  this->height = tex->h;
 
-  this->width = this->m_texture->w;
-  this->height = this->m_texture->h;
+  this->m_texture = std::unique_ptr<SDL_Texture, Pride::SDLTextureDestroyer>(tex);
 }
 
 Pride::Texture::Texture(Math::Vec2 size, SDL_PixelFormat format, SDL_TextureAccess access, SDL_Renderer* render)

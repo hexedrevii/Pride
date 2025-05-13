@@ -20,6 +20,9 @@ namespace Pride
     /// @param entity The entity to enroll
     void enroll(std::shared_ptr<Entity> entity);
 
+    /// @brief Should be called once when an event happens.
+    virtual void event(const SDL_Event& event);
+
     /// @brief Should be called once a frame, before render.
     void process(float delta);
 
@@ -52,6 +55,14 @@ namespace Pride
   inline void Planet::enroll(std::shared_ptr<Entity> entity)
   {
     this->m_entities.push_back(entity);
+  }
+
+  inline void Planet::event(const SDL_Event& event)
+  {
+    for (std::shared_ptr<Entity> &entity : this->m_entities)
+    {
+      entity->handle_events(event);
+    }
   }
 
   inline void Planet::process(float delta)
